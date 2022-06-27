@@ -12,11 +12,15 @@ const {
   LoggedStudent,
   MyInfo,
   DeleteStudentMutation,
+  SingleStudent,
+  EditStudent,
+  removeStudent,
 } = require("./Resolvers/StudentResolver")
 const {
   AddCandidate,
   ViewCandidates,
   SchoolCandidates,
+  RemoveCandidate,
 } = require("./Resolvers/CandidateResolver")
 const { CastVote, Winners, meVoted } = require("./Resolvers/VotesResolver")
 const { LoggedIn } = require("./Resolvers/LoggedIn")
@@ -28,6 +32,7 @@ const RootQuery = new GraphQLObjectType({
     loggedInUser: LoggedInUser,
     schools: SchoolQuery,
     students: AllStudents,
+    student: SingleStudent,
     candidates: ViewCandidates,
     schoolCandidates: SchoolCandidates,
     studentLogin: StudentLogin,
@@ -47,6 +52,9 @@ const RootMutation = new GraphQLObjectType({
     addStudent: AddStudentMutation,
     addCandidate: AddCandidate,
     castVote: CastVote,
+    editStudent: EditStudent,
+    deleteStudent: removeStudent,
+    removeCandidate: RemoveCandidate,
   },
 })
 

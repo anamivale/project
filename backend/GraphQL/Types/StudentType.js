@@ -1,4 +1,10 @@
-const { GraphQLObjectType, GraphQLString, GraphQLList } = require("graphql")
+const {
+  GraphQLObjectType,
+  GraphQLString,
+  GraphQLList,
+  GraphQLBoolean,
+} = require("graphql")
+const Candidate = require("../../Models/Candidate")
 const School = require("../../Models/School")
 // const SchoolType = require("./SchoolType")
 
@@ -32,6 +38,14 @@ const StudentType = new GraphQLObjectType({
       },
     },
     code: { type: GraphQLString },
+    isCandidate: {
+      type: GraphQLBoolean,
+      async resolve(_) {
+        const { reg_no } = _
+        const candidate = await Candidate.findOne({ reg_no })
+        return !!candidate
+      },
+    },
   }),
 })
 

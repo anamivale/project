@@ -2,6 +2,7 @@ const { GraphQLString, GraphQLList } = require("graphql")
 const Candidate = require("../../Models/Candidate")
 const School = require("../../Models/School")
 const Student = require("../../Models/Student")
+const Votes = require("../../Models/Votes")
 const CandidateType = require("../Types/CandidateType")
 const StudentType = require("../Types/StudentType")
 
@@ -55,4 +56,21 @@ const AddCandidate = {
   },
 }
 
-module.exports = { AddCandidate, ViewCandidates, SchoolCandidates }
+const RemoveCandidate = {
+  type: StudentType,
+  args: { reg_no: { type: GraphQLString } },
+  async resolve(_, args) {
+    const { reg_no } = args
+    let votes = await Votes.deleteMany({ candidate: reg_no }) // remove votes
+    let candidate = await Candidate.findOneAndDelete({ reg_no })
+    if (!candidate) throw new Error(`No candidate with Reg.No: ${reg_no}`)
+    else return candidate
+  },
+}
+
+module.exports = {
+  AddCandidate,
+  ViewCandidates,
+  SchoolCandidates,
+  RemoveCandidate,
+}
